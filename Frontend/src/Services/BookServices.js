@@ -1,86 +1,23 @@
-async function getAllBooksService() {
+// src/services/BookServices.js
 
-    const reponse = await fetch("http://localhost:8080/public/getAll",{
-        method:'GET',
-        credentials:'include'
-    })
+export async function getAllBooks() {
+  const response = await fetch("http://localhost:8080/public/getAll", {
+    credentials: "include",
+  });
+  if (!response.ok) throw new Error("Failed to fetch books");
 
-    if(!reponse.ok){
-        throw new Error("Failed to fetch")
-    }
-    
-    return reponse.json()
+  const data = await response.json();
+  // backend usually wraps in "content"
+  return data.content ? data.content : data;
 }
-async function getAllCartService() {
 
-    const reponse = await fetch("http://localhost:8080/public/getCart",{
-        method:'GET',
-        credentials:'include'
-    })
-
-    if(!reponse.ok){
-        throw new Error("Failed to fetch")
-    }
-    
-    return reponse.json()
-}
-async function getAllBooksByCategoryService(catgory) {
-
-    const reponse = await fetch(`http://localhost:8080/public/getByCatgory?catgory=${catgory}`,{
-        method:'GET',
-        credentials:'include'
-    })
-
-    if(!reponse.ok){
-        throw new Error("Failed to fetch")
-    }
-    
-    return reponse.json()
-}
-async function DeleteBooksService(id) {
-
-    const reponse = await fetch(`http://localhost:8080/admin/deletebooks?id=${id}`,{
-        method:'DELETE',
-        credentials:'include'
-    })
-
-    if(!reponse.ok){
-        throw new Error("Failed to delete")
-    }
-    
-    return reponse.json()
-}
-async function AddBooksService(bookData) {
-
-    const reponse = await fetch("http://localhost:8080/admin/save",{
-        method:'POST',
-        headers:{
-            "Content-Type": "application/json"
-        },
-        credentials:'include',
-        body:JSON.stringify(bookData)
-    })
-
-    if(!reponse.ok){
-        throw new Error("Failed to add")
-    }
-    
-    return reponse.json()
-}
-async function UpdateService(bookData) {
-
-    const reponse = await fetch("http://localhost:8080/admin/update",{
-        method:'PUT',
-                headers:{
-            "Content-Type": "application/json"
-        },
-        credentials:'include',
-        body:JSON.stringify(bookData)
-    })
-
-    if(!reponse.ok){
-        throw new Error("Failed to Update")
-    }
-    
-    return reponse.json()
+export async function updateBook(id, bookData) {
+  const response = await fetch(`http://localhost:8080/admin/update/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(bookData), // must include title, author, category, imageUrl
+    credentials: "include",
+  });
+  if (!response.ok) throw new Error("Failed to update book");
+  return response.json();
 }

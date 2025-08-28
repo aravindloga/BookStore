@@ -1,32 +1,21 @@
-async function LoginService(email,password) {
-        const reponse = await fetch("http://localhost:8080/auth/login",{
-            method:'POST',
-            headers:{
-                "Content-Type":"application/JSON"
-            },
-            body:JSON.stringify({email,password}),
-            
-            credentials:'include'
-        });
-        if(!reponse.ok){
-            throw new Error("Login Failed")
-        }
+export async function LoginService(email, password) {
+  const response = await fetch("http://localhost:8080/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+    credentials: "include"
+  });
+  if (!response.ok) throw new Error("Login Failed");
+  return response.json();
+}
 
-        return reponse.json();
-    }
-async function SignupService(fullName,email,password) {
-        const reponse = await fetch("http://localhost:8080/auth/signup",{
-            method:'POST',
-            headers:{
-                "Content-Type":"application/JSON"
-            },
-            body:JSON.stringify({fullName,email,password}),
-            
-            credentials:'include'
-        });
-        if(!reponse.ok){
-            throw new Error("SignUp Failed")
-        }
-
-        return reponse.json();
-    }
+export async function SignupService(fullName, email, password) {
+  const response = await fetch("http://localhost:8080/auth/signup", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fullName, email, password }),
+    credentials: "include"
+  });
+  if (!response.ok) throw new Error("Signup Failed");
+  return response.json();
+}
