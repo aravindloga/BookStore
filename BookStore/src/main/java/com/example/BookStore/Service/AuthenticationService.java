@@ -80,7 +80,10 @@ public ResponseDTO LoginService(LoginDTO loginDTO, HttpServletResponse response)
     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
             loginDTO.getEmail(),loginDTO.getPassword()
     );
-    authenticationManager.authenticate(authenticationToken);
+    Authentication authentication = 
+        authenticationManager.authenticate(authenticationToken);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
     String token = jwtUtils.generateToken(user.getEmail());
     ResponseCookie cookie= ResponseCookie.from("jwt",token)
             .httpOnly(true)
